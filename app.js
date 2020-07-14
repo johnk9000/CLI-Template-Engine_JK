@@ -1,5 +1,8 @@
 var inquirer = require("inquirer");
 const Employee = require("./lib/Employee")
+const Engineer = require("./lib/Engineer")
+// const Intern = require("./lib/Intern")
+// const Manager = require("./lib/Manager")
 const questions = [
     {
         type: 'input',
@@ -28,11 +31,27 @@ const questions = [
     },
 ]
 
-inquirer.prompt(questions).then( (response) => {
-    let name = response.name;
-    let id = response.id;
-    let email = response.email;
-    let role = response.role;
+// function askForInfo() {
+//     inquirer.prompt(questions).then( (response) => {
+//         return new Employee(response.name, response.id, response.email, response.role);
+//     })
+// }
 
-    return new Employee(name, id, email, role);
-});
+let test = {
+    name: 'John Kim',
+    id: 420,
+    email: 'johnk9000@gmail.com',
+    role: 'engineer',
+    gitHub: 'johnk9000'
+}
+var persona = new Employee(test.name, test.id, test.email, test.role);
+    console.log(persona);
+
+
+if(persona.role === 'engineer'){
+    var profile = new Engineer(test.name, test.id, test.email, test.role, test.gitHub)
+
+    console.log(profile);
+}
+
+module.exports = profile;

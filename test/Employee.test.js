@@ -74,10 +74,10 @@ describe("Employee", () => {
         });
 
         it("should throw an error if 'role' is not either 'Intern','Manager', or 'Engineer'", () => {
-        const cb = () => new Employee('John', 420, 'johnk9000@gmail.com', 'wizard');
-        const err = new Error("Invalid role was specified");
+            const cb = () => new Employee('John', 420, 'johnk9000@gmail.com', 'wizard');
+            const err = new Error("Invalid role was specified");
 
-        expect(cb).toThrowError(err);
+            expect(cb).toThrowError(err);
         });
     })
 })
