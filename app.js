@@ -1,57 +1,87 @@
-var inquirer = require("inquirer");
-const Employee = require("./lib/Employee")
-const Engineer = require("./lib/Engineer")
-// const Intern = require("./lib/Intern")
-// const Manager = require("./lib/Manager")
-const questions = [
+const inquirer = require("inquirer");
+const util = require("util");
+const Employee = require("./lib/Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+var questions = [
     {
-        type: 'input',
-        message: 'Enter your name',
-        name: 'name'
+        type: "input",
+        name: "name",
+        message: `
+    What is your name?
+    `,
     },
     {
-        type: 'input',
-        message: 'Enter your id',
-        name: 'id'
+        type: "input",
+        name: "id",
+        message: `
+    What is your badge number? 
+    `  
     },
     {
-        type: 'input',
-        message: 'Enter your e-mail',
-        name: 'email'
+        type: "input",
+        name: "email",
+        message: `
+    Enter e-mail address: 
+    `  
     },
     {
-        type: 'checkbox',
-        message: 'What is your role?',
-        name: 'role',
+        type: "checkbox",
+        name: "role",
+        message:`
+        Choose Role`,
         choices: [
-            'Intern',
-            'Engineer',
-            'Manager'
+            "Intern",
+            "Manager",
+            "Engineer"
         ]
     },
-]
+];
 
-// function askForInfo() {
-//     inquirer.prompt(questions).then( (response) => {
-//         return new Employee(response.name, response.id, response.email, response.role);
+function prompt()  {
+
+    return inquirer.prompt(questions);
+}
+
+// function promptEngineer {
+//     return inquirer.prompt({ 
+//         type: 'input',
+//         name: 'gitHub',
+//         message:`
+// Enter github username: 
+//         `
 //     })
 // }
 
-let test = {
-    name: 'John Kim',
-    id: 420,
-    email: 'johnk9000@gmail.com',
-    role: 'engineer',
-    gitHub: 'johnk9000'
+// function promptEngineer {
+//     return inquirer.prompt({ 
+//         type: 'input',
+//         name: 'gitHub',
+//         message:`
+// Enter github username: 
+//         `
+//     })
+// }
+
+
+async function init() {
+    try {
+        const test = await prompt();
+        const role = test.role.toString();
+        var persona = new Employee(test.name, parseInt(test.id), test.email, role);
+        if(role === 'Engineer') {
+        console.log(test.role.toString());
+    } else if(role === 'Manager') {
+
+    } else if(role === 'Intern') {
+
+    }
+    } catch(err) {
+        console.log(err)
+    }
+    console.log('writing answers')
 }
-var persona = new Employee(test.name, test.id, test.email, test.role);
-    console.log(persona);
 
 
-if(persona.role === 'engineer'){
-    var profile = new Engineer(test.name, test.id, test.email, test.role, test.gitHub)
-
-    console.log(profile);
-}
-
-module.exports = profile;
+init();
