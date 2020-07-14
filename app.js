@@ -44,25 +44,35 @@ function prompt()  {
     return inquirer.prompt(questions);
 }
 
-// function promptEngineer {
-//     return inquirer.prompt({ 
-//         type: 'input',
-//         name: 'gitHub',
-//         message:`
-// Enter github username: 
-//         `
-//     })
-// }
+function promptEngineer() {
+    return inquirer.prompt({ 
+        type: 'input',
+        name: 'gitHub',
+        message:`
+Enter github username: 
+        `
+    })
+}
 
-// function promptEngineer {
-//     return inquirer.prompt({ 
-//         type: 'input',
-//         name: 'gitHub',
-//         message:`
-// Enter github username: 
-//         `
-//     })
-// }
+function promptManager() {
+    return inquirer.prompt({ 
+        type: 'input',
+        name: 'officeNum',
+        message:`
+Enter your office number: 
+        `
+    })
+}
+
+function promptIntern() {
+    return inquirer.prompt({ 
+        type: 'input',
+        name: 'school',
+        message:`
+What school did you graduate from most recently? 
+        `
+    })
+}
 
 
 async function init() {
@@ -70,13 +80,22 @@ async function init() {
         const test = await prompt();
         const role = test.role.toString();
         var persona = new Employee(test.name, parseInt(test.id), test.email, role);
+
         if(role === 'Engineer') {
-        console.log(test.role.toString());
-    } else if(role === 'Manager') {
-
-    } else if(role === 'Intern') {
-
-    }
+            const username = await promptEngineer();
+            var engineer = new Engineer(test.name, parseInt(test.id), test.email, role, username.gitHub)
+                console.log("Engineer's profile data: " + JSON.stringify(engineer));
+        } else if(role === 'Manager') {
+            const office = await promptManager();
+            var manager = new Manager(test.name, parseInt(test.id), test.email, role, office.officeNum)
+                console.log("Manager's profile data: " + manager.toString());
+        } else if(role === 'Intern') {
+            const uni = await promptIntern();
+            var intern = new Intern(test.name, parseInt(test.id), test.email, role, uni.school)
+                console.log("Intern's profile data: " + intern.toString());
+        } else {
+            console.log('error')
+        }
     } catch(err) {
         console.log(err)
     }
