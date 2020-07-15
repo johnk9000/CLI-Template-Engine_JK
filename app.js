@@ -144,7 +144,7 @@ async function init() {
     } else if (order == "Save All & Exit"){
         employees = JSON.stringify(employees);
         console.log(employees)
-        await appendFileAsync('cache.txt', employees);
+        await writeFileAsync('cache.txt', employees);
         await renderPage();
         //RENDER HTML HERE
         console.log('Exiting...')
