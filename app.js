@@ -38,7 +38,7 @@ var questions = [
         type: "list",
         name: "role",
         message:`
-        Choose Role`,
+    -- Choose Role --`,
         choices: [
             "Intern",
             "Manager",
@@ -58,7 +58,7 @@ function promptEngineer() {
         type: 'input',
         name: 'gitHub',
         message:`
-Enter github username: 
+    Enter github username: 
         `
     })
 }
@@ -68,7 +68,7 @@ function promptManager() {
         type: 'input',
         name: 'officeNum',
         message:`
-Enter your office number: 
+    Enter your office number: 
         `
     })
 }
@@ -78,13 +78,18 @@ function promptIntern() {
         type: 'input',
         name: 'school',
         message:`
-What school did you graduate from most recently? 
+    What school did you graduate from most recently? 
         `
     })
 }
+const fileName = "../lib/cache.txt"
 
-let employees = [];
-
+var employees = fs.readFileSync(fileName, 'utf-8');
+if(employees !== "") {
+    employees = JSON.parse(employees);
+} else {
+    employees = [];
+}
 async function init() {
     let len = employees.length;
     let order = await startCommand();
@@ -95,13 +100,12 @@ async function init() {
             const test = await prompt();
             const role = test.role.toString();
             var persona = new Employee(test.name, parseInt(test.id), test.email, role);
-            let fileName = 'cache.txt'
             // Role specific prompts and construction of one of three class extensions
             if(role === 'Engineer') {
                 const username = await promptEngineer()
                 var engineer = new Engineer(test.name, parseInt(test.id), test.email, role, username.gitHub)
                         //engineer = JSON.stringify(engineer);
-                        console.log("Engineer's profile data: " + engineer);
+                        //console.log("Engineer's profile data: " + engineer);
                     employees.push(engineer)
                     if(len < employees.length) {
                         init()
@@ -111,7 +115,7 @@ async function init() {
                 const office = await promptManager()
                 var manager = new Manager(test.name, parseInt(test.id), test.email, role, office.officeNum)
                         //manager = JSON.stringify(manager);
-                        console.log("Manager's profile data: " + manager);
+                        //console.log("Manager's profile data: " + manager);
                     employees.push(manager)
                     if(len < employees.length) {
                         init()
@@ -125,7 +129,7 @@ async function init() {
                         //console.log("Intern's profile data: " + intern);
                     employees.push(intern)
                         console.log("employees: " + employees.length);
-                        console.log(len)
+                        //console.log(len)
                         if(len < employees.length) {
                             init();
                         }
@@ -140,14 +144,18 @@ async function init() {
         }
         
     } else if (order === "Clear Cache") {
-        await writeFileAsync('cache.txt', "");
+        await writeFileAsync(fileName, "");
     } else if (order == "Save All & Exit"){
         employees = JSON.stringify(employees);
-        console.log(employees)
-        await writeFileAsync('cache.txt', employees);
-        await renderPage();
-        //RENDER HTML HERE
+        //console.log(employees)
+        fs.writeFileSync(fileName, employees)//RENDER HTML HERE
+        let newFile = fs.readFileSync(fileName, 'utf-8');
+        if(newFile.length == employees.length) {
+            renderPage();
+            console.log('Cards have been rendered... Exiting...')
+        } else {
         console.log('Exiting...')
+        }
     }
 
 }
